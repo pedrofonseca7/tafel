@@ -7,6 +7,7 @@ export default async function DashboardLayout({ children }: { children: React.Re
 
   const links = [
     { href: '/dashboard', label: 'Pedidos' },
+    { href: '/dashboard/encomendas', label: 'Encomendas' },
     { href: '/dashboard/menu', label: 'Menu' },
     { href: '/dashboard/tables', label: 'Mesas & QR Codes' },
     { href: '/dashboard/settings', label: 'Definições' }

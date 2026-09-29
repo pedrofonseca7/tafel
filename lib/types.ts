@@ -82,6 +82,41 @@ export type OrderItem = {
   notes: string | null
 }
 
+export type DeliveryOrderStatus =
+  | 'pending'
+  | 'accepted'
+  | 'rejected'
+  | 'preparing'
+  | 'ready'
+  | 'out_for_delivery'
+  | 'delivered'
+
+export type DeliveryOrder = {
+  id: string
+  restaurant_id: string
+  session_token: string
+  status: DeliveryOrderStatus
+  total: number
+  customer_name: string
+  customer_phone: string
+  address: string
+  postal_code: string
+  city: string
+  notes: string | null
+  created_at: string
+  updated_at: string
+}
+
+export type DeliveryOrderItem = {
+  id: string
+  delivery_order_id: string
+  product_id: string | null
+  product_name: string
+  quantity: number
+  unit_price: number
+  notes: string | null
+}
+
 export type CartOptionSelection = {
   value_id: string
   option_name: string

@@ -19,6 +19,14 @@ MVP funcional em **Next.js 14 + TypeScript + Tailwind + Supabase (Postgres/Auth/
 - Checkout com confirmação de mesa
 - Acompanhamento do estado do pedido via token de sessão (sem login)
 
+**Encomendas para entrega** (`/encomendas/[slug]`) — separado do sistema de Pedidos de mesa
+- Link público próprio, independente dos QR Codes, para partilhar em Instagram/WhatsApp/bio
+- Reutiliza o mesmo menu/produtos já configurados, sem duplicar dados
+- Checkout com nome, telemóvel, morada, código postal e localidade; pagamento no ato da entrega (MB WAY ou dinheiro)
+- 6 fases: Pedido recebido → Restaurante aceitou → Em preparação → Pronto → Saiu para entrega → Entregue
+- Aba "Encomendas" própria no dashboard (tabela `delivery_orders`, distinta de `orders`), com o mesmo padrão de tempo real
+- Acompanhamento do cliente por polling autenticado por token de sessão, tal como os pedidos de mesa
+
 **Plataforma**
 - Multi-tenant com isolamento garantido por Row Level Security (RLS) no Postgres
 - Painel de administração global (`/admin`): listar, bloquear/desbloquear restaurantes, métricas básicas
