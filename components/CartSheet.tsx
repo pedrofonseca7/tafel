@@ -66,6 +66,7 @@ export default function CartSheet({
                 {item.options.map((o, i) => (
                   <p key={i} className="text-xs text-ink/50">+ {o.value_name}</p>
                 ))}
+                {item.notes && <p className="text-xs text-ink/50 italic">"{item.notes}"</p>}
                 <div className="flex items-center gap-2 mt-1">
                   <button onClick={() => updateQty(item.key, item.quantity - 1)} className="w-6 h-6 rounded-full border border-line text-xs">−</button>
                   <span className="text-sm w-4 text-center">{item.quantity}</span>

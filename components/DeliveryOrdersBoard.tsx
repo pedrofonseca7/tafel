@@ -147,6 +147,7 @@ export default function DeliveryOrdersBoard({
                       ))}
                     </ul>
                   )}
+                  {item.notes && <p className="pl-4 text-xs text-paprika italic">"{item.notes}"</p>}
                 </li>
               ))}
             </ul>

@@ -8,6 +8,7 @@ export default function ProductDetailSheet({ product, onClose }: { product: Prod
   const { addItem } = useCart()
   const [selected, setSelected] = useState<Record<string, string[]>>({})
   const [quantity, setQuantity] = useState(1)
+  const [notes, setNotes] = useState('')
 
   const groups = product.product_options ?? []
 
@@ -49,7 +50,8 @@ export default function ProductDetailSheet({ product, onClose }: { product: Prod
       name: product.name,
       unit_price: Number(product.price),
       quantity,
-      options
+      options,
+      notes: notes.trim() || undefined
     })
     onClose()
   }
@@ -93,6 +95,18 @@ export default function ProductDetailSheet({ product, onClose }: { product: Prod
               </div>
             </div>
           ))}
+
+          <div className="mb-5">
+            <label className="text-sm font-medium mb-2 block">Notas (opcional)</label>
+            <textarea
+              className="input"
+              rows={2}
+              maxLength={200}
+              placeholder="Ex: bem passado, sem cebola, sem glúten..."
+              value={notes}
+              onChange={(e) => setNotes(e.target.value)}
+            />
+          </div>
 
           <div className="flex items-center gap-4 mb-5">
             <span className="text-sm text-ink/60">Quantidade</span>
