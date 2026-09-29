@@ -117,18 +117,6 @@ export type DeliveryOrderItem = {
   notes: string | null
 }
 
-export type NotificationRow = {
-  id: string
-  restaurant_id: string
-  type: 'order' | 'delivery_order'
-  order_id: string | null
-  delivery_order_id: string | null
-  title: string
-  body: string
-  read: boolean
-  created_at: string
-}
-
 export type CartOptionSelection = {
   value_id: string
   option_name: string
