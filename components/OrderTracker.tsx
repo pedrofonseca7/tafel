@@ -52,7 +52,7 @@ export default function OrderTracker({ orderId, sessionToken, slug }: { orderId:
       <main className="min-h-screen flex flex-col items-center justify-center text-center px-6">
         <p className="font-display text-2xl mb-2">O pedido foi rejeitado</p>
         <p className="text-ink/60 mb-6">Fala com a equipa do restaurante na mesa.</p>
-        <a href={`/r/${slug}`} className="btn-secondary">Voltar ao menu</a>
+        <a href={`/r/${slug}/t/${order.tables?.qr_token}`} className="btn-secondary">Voltar ao menu</a>
       </main>
     )
   }
@@ -95,7 +95,7 @@ export default function OrderTracker({ orderId, sessionToken, slug }: { orderId:
         <p className="font-medium border-t border-line pt-3">Total: €{Number(order.total).toFixed(2)}</p>
       </div>
 
-      <a href={`/r/${slug}`} className="btn-secondary w-full mt-6 block text-center">
+      <a href={`/r/${slug}/t/${order.tables?.qr_token}`} className="btn-secondary w-full mt-6 block text-center">
         Fazer novo pedido
       </a>
     </main>

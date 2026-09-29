@@ -10,7 +10,7 @@ export async function GET(req: NextRequest, { params }: { params: { id: string }
   const supabase = createAdminSupabase()
   const { data: order, error } = await supabase
     .from('orders')
-    .select('*, order_items(*, order_item_options(*)), tables(label), restaurants(name, logo_url, brand_color)')
+    .select('*, order_items(*, order_item_options(*)), tables(label, qr_token), restaurants(name, logo_url, brand_color)')
     .eq('id', params.id)
     .eq('session_token', sessionToken)
     .single()
