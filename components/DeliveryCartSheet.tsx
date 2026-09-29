@@ -41,6 +41,7 @@ export default function DeliveryCartSheet({
           items: items.map((i) => ({
             product_id: i.product_id,
             quantity: i.quantity,
+            notes: i.notes,
             options: i.options.map((o) => ({ value_id: o.value_id }))
           })),
           ...form
