@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { createAdminSupabase } from '@/lib/supabase/server'
+import { notifyRestaurant } from '@/lib/push'
 
 type IncomingItem = {
   product_id: string
@@ -144,6 +145,14 @@ export async function POST(req: NextRequest) {
       )
     }
   }
+
+  await notifyRestaurant({
+    restaurantId: restaurant_id,
+    type: 'delivery_order',
+    deliveryOrderId: order.id,
+    title: 'Nova encomenda',
+    body: `${customer_name.trim()} · €${total.toFixed(2)}`
+  })
 
   return NextResponse.json({ order_id: order.id, session_token: order.session_token, total })
 }

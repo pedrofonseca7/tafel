@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { createAdminSupabase } from '@/lib/supabase/server'
+import { notifyRestaurant } from '@/lib/push'
 
 type IncomingItem = {
   product_id: string
@@ -118,6 +119,16 @@ export async function POST(req: NextRequest) {
       )
     }
   }
+
+  // Aguarda-se o envio (mesmo que falhe) para garantir que corre até ao fim
+  // antes da função serverless terminar — ver lib/push.ts para o porquê.
+  await notifyRestaurant({
+    restaurantId: restaurant_id,
+    type: 'order',
+    orderId: order.id,
+    title: 'Novo pedido',
+    body: `${resolvedItems.length} item${resolvedItems.length > 1 ? 's' : ''} · €${total.toFixed(2)}`
+  })
 
   return NextResponse.json({ order_id: order.id, session_token: order.session_token, total })
 }

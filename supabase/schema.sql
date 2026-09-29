@@ -157,6 +157,29 @@ create table delivery_order_item_options (
   price_delta numeric(10,2) not null default 0
 );
 
+-- ---------- SUBSCRIÇÕES DE NOTIFICAÇÕES PUSH (por dispositivo/browser) ----------
+create table push_subscriptions (
+  id uuid primary key default gen_random_uuid(),
+  restaurant_id uuid not null references restaurants(id) on delete cascade,
+  endpoint text not null unique,
+  p256dh text not null,
+  auth text not null,
+  created_at timestamptz not null default now()
+);
+
+-- ---------- HISTÓRICO DE NOTIFICAÇÕES (aba "Notificações" do dashboard) ----------
+create table notifications (
+  id uuid primary key default gen_random_uuid(),
+  restaurant_id uuid not null references restaurants(id) on delete cascade,
+  type text not null check (type in ('order', 'delivery_order')),
+  order_id uuid references orders(id) on delete cascade,
+  delivery_order_id uuid references delivery_orders(id) on delete cascade,
+  title text not null,
+  body text not null,
+  read boolean not null default false,
+  created_at timestamptz not null default now()
+);
+
 -- ---------- SUBSCRIÇÕES (preparado para o futuro) ----------
 create table subscriptions (
   id uuid primary key default gen_random_uuid(),
@@ -202,6 +225,8 @@ alter table order_item_options enable row level security;
 alter table delivery_orders enable row level security;
 alter table delivery_order_items enable row level security;
 alter table delivery_order_item_options enable row level security;
+alter table push_subscriptions enable row level security;
+alter table notifications enable row level security;
 alter table subscriptions enable row level security;
 
 -- Restaurants: leitura pública (para a página do cliente), escrita só staff/admin
@@ -277,6 +302,14 @@ create policy "staff read delivery order item options" on delivery_order_item_op
 );
 create policy "anyone insert delivery order item options" on delivery_order_item_options for insert with check (true);
 
+-- Subscrições push: staff gere as do seu restaurante; o servidor (service role) lê todas para enviar
+create policy "staff manage own push subscriptions" on push_subscriptions for all
+  using (is_staff_of(restaurant_id)) with check (is_staff_of(restaurant_id));
+
+-- Notificações: staff vê e marca como lidas as do seu restaurante; inserção feita pelo servidor (service role)
+create policy "staff read own notifications" on notifications for select using (is_staff_of(restaurant_id) or is_platform_admin());
+create policy "staff update own notifications" on notifications for update using (is_staff_of(restaurant_id));
+
 create policy "staff manage subscriptions" on subscriptions for all using (is_staff_of(restaurant_id) or is_platform_admin());
 
 -- ============================================================
@@ -286,6 +319,7 @@ alter publication supabase_realtime add table orders;
 alter publication supabase_realtime add table order_items;
 alter publication supabase_realtime add table delivery_orders;
 alter publication supabase_realtime add table delivery_order_items;
+alter publication supabase_realtime add table notifications;
 
 -- ============================================================
 -- STORAGE: bucket público para fotos (logos, capas, produtos)

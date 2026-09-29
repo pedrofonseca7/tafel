@@ -27,6 +27,11 @@ MVP funcional em **Next.js 14 + TypeScript + Tailwind + Supabase (Postgres/Auth/
 - Aba "Encomendas" própria no dashboard (tabela `delivery_orders`, distinta de `orders`), com o mesmo padrão de tempo real
 - Acompanhamento do cliente por polling autenticado por token de sessão, tal como os pedidos de mesa
 
+**Notificações**
+- Aba "Notificações" no dashboard: histórico completo de todos os Pedidos e Encomendas recebidos, com estado lido/não lido e badge de contagem no menu
+- Notificações push do browser (Web Push + Service Worker), mesmo com o dashboard fechado — desde que o browser/computador esteja aberto e a equipa tenha carregado em "Ativar notificações neste dispositivo" pelo menos uma vez
+- Requer as variáveis de ambiente `NEXT_PUBLIC_VAPID_PUBLIC_KEY` / `VAPID_PRIVATE_KEY` / `VAPID_SUBJECT` (gera um par com `node scripts/generate-vapid-keys.js`) e a migração `supabase/migrations/002_notifications.sql`
+
 **Plataforma**
 - Multi-tenant com isolamento garantido por Row Level Security (RLS) no Postgres
 - Painel de administração global (`/admin`): listar, bloquear/desbloquear restaurantes, métricas básicas
@@ -34,8 +39,8 @@ MVP funcional em **Next.js 14 + TypeScript + Tailwind + Supabase (Postgres/Auth/
 
 **Ainda não implementado (fora do MVP, mas a arquitetura já prevê):**
 - Pagamentos online (MB WAY, cartão, Apple/Google Pay)
-- Notificações push nativas (a base está pronta: Realtime + Service Worker pode ser adicionado)
 - Faturação/subscrições automáticas (tabela `subscriptions` já existe)
+- Notificações push em iPhone: o Safari do iOS só recebe Web Push se o site for adicionado ao ecrã principal como app (iOS 16.4+); em Android e computador funciona diretamente no browser
 
 ---
 

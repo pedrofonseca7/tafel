@@ -1,6 +1,8 @@
 import Link from 'next/link'
 import { getCurrentRestaurant } from '@/lib/getCurrentRestaurant'
 import SignOutButton from '@/components/SignOutButton'
+import NotificationsNavBadge from '@/components/NotificationsNavBadge'
+import PushNotificationSetup from '@/components/PushNotificationSetup'
 
 export default async function DashboardLayout({ children }: { children: React.ReactNode }) {
   const { restaurant } = await getCurrentRestaurant()
@@ -8,6 +10,7 @@ export default async function DashboardLayout({ children }: { children: React.Re
   const links = [
     { href: '/dashboard', label: 'Pedidos' },
     { href: '/dashboard/encomendas', label: 'Encomendas' },
+    { href: '/dashboard/notificacoes', label: 'Notificações', badge: true },
     { href: '/dashboard/menu', label: 'Menu' },
     { href: '/dashboard/tables', label: 'Mesas & QR Codes' },
     { href: '/dashboard/settings', label: 'Definições' }
@@ -20,13 +23,17 @@ export default async function DashboardLayout({ children }: { children: React.Re
           <p className="font-display text-lg truncate">{restaurant.name}</p>
           <p className="text-xs text-ink/50">/r/{restaurant.slug}</p>
         </div>
+        <div className="hidden md:block">
+          <PushNotificationSetup restaurantId={restaurant.id} />
+        </div>
         {links.map((l) => (
           <Link
             key={l.href}
             href={l.href}
-            className="px-3 py-2 rounded-card text-sm text-ink/70 hover:bg-ink/5 hover:text-ink whitespace-nowrap"
+            className="px-3 py-2 rounded-card text-sm text-ink/70 hover:bg-ink/5 hover:text-ink whitespace-nowrap flex items-center justify-between gap-2"
           >
             {l.label}
+            {l.badge && <NotificationsNavBadge restaurantId={restaurant.id} />}
           </Link>
         ))}
         <div className="hidden md:block mt-auto pt-6">
