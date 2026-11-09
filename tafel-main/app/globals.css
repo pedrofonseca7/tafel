@@ -1,0 +1,28 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+* {
+  -webkit-tap-highlight-color: transparent;
+}
+
+::selection {
+  background: #C4501C;
+  color: #FBF8F3;
+}
+
+.btn-primary {
+  @apply bg-paprika text-paper rounded-card px-5 py-3 font-medium transition active:scale-[0.98] disabled:opacity-40;
+}
+
+.btn-secondary {
+  @apply bg-transparent border border-ink/15 text-ink rounded-card px-5 py-3 font-medium transition active:scale-[0.98];
+}
+
+.input {
+  @apply w-full rounded-card border border-ink/15 bg-paper px-4 py-3 text-ink placeholder:text-ink/40 focus:outline-none focus:border-paprika transition;
+}
+
+.card {
+  @apply bg-white rounded-card border border-line;
+}
